@@ -1,75 +1,174 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useUser } from '@/context/UserContext';
+import CircularProgress from 'react-native-circular-progress-indicator';
+import { Button, SegmentedButtons } from 'react-native-paper';
+import { addTodayEntry } from '@/utils/storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getTodayLog } from '@/utils/storage';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { scheduleWaterReminder } from '@/utils/reminder';
+import SettingsModal from '@/components/SettingsModal';
 
-export default function HomeScreen() {
+import HistoryCard from '@/components/historyCard';
+const Status = () => {
+  const { user, isLoadingUser, resetUser } = useUser();
+  const [limit, setLimit] = useState<number>(0);
+  const [drinkedWater, setDrinkedWater] = useState<number>(0);
+  const [recentEntries, setRecentEntries] = useState<{ amount: number; time: string }[]>([]);
+
+  const [modalVisible, setModalVisible] = useState(false); const FREQUENCIES = [100, 250, 500];
+  useEffect(() => {
+    const fetchRecentHistory = async () => {
+      try {
+        const allEntries = await getTodayLog();
+        const lastTwo = allEntries.slice(-2).reverse(); // reverse to show most recent first
+        setRecentEntries(lastTwo);
+      } catch (error) {
+        console.log("Failed to fetch recent history:", error);
+      }
+    };
+
+    fetchRecentHistory();
+  }, [drinkedWater]); // refresh when user drinks water
+
+  useEffect(() => {
+    if (user?.mode === 'auto') {
+      setLimit(user.waterRequirement);
+    }
+    // handeling custom is remaining 
+  }, [user]);
+
+  const handleAddWater = async (value: number) => {
+    setDrinkedWater((prev) => prev + value);
+    try {
+      await addTodayEntry(value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handelSetting = () => {
+    setModalVisible(true);
+  }
+  const progress = limit > 0 ? (drinkedWater / limit) * 100 : 0;
+
+  if (isLoadingUser || !user) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.loadingText}>Loading user data...</Text>
+      </View>
+    );
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      <View style={styles.progress}>
+        <CircularProgress
+          value={progress}
+          radius={100}
+          duration={1500}
+          progressValueColor={'#00e0ff'}
+          maxValue={100}
+          title={'Progress'}
+          titleColor={'#333'}
+          activeStrokeColor={'#00e0ff'}
+          inActiveStrokeColor={'#d3d3d3'}
+          inActiveStrokeOpacity={0.2}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Text style={styles.statusText}>{drinkedWater} ml / {limit} ml</Text>
+        <TouchableOpacity style={styles.settingButton}
+          onPress={handelSetting}
+        >
+          <MaterialCommunityIcons
+            name="cog"
+            size={30}
+            color={'black'}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <SegmentedButtons
+        value={null}
+        onValueChange={(value: any) => handleAddWater(Number(value))}
+        buttons={FREQUENCIES.map((freq) => ({
+          value: freq.toString(),
+          label: `${freq} ml`,
+        }))}
+        style={styles.segmentedButtons}
+      />
+
+      <Button
+        mode="contained"
+        onPress={() => {
+          scheduleWaterReminder();
+        }}>
+        press for notifications
+      </Button>
+
+      <View style={styles.history}>
+        <Text>last drink:</Text>
+        <FlatList
+          data={recentEntries}
+          keyExtractor={(item, index) => `${item.time}-${index}`}
+          renderItem={({ item }) => <HistoryCard item={item} />}
+          ListEmptyComponent={<Text style={styles.empty}>No drinks yet today.</Text>}
+        />
+      </View>
+      <SettingsModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+
+      />
+    </View>
   );
-}
+};
+
+export default Status;
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
   },
-  stepContainer: {
-    gap: 8,
+  progress: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  statusText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 12,
+  },
+  segmentedButtons: {
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: 'gray',
+  },
+  history: {
+    backgroundColor: '#ede7ff',
+    padding: 16,
+    borderRadius: 20,
+  },
+  historyText: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  settingButton: {
     position: 'absolute',
+    right: 2,
+    bottom: 10
+  },
+  empty: {
+    textAlign: 'center',
+    color: '#888',
+    fontSize: 14,
   },
 });

@@ -1,45 +1,63 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import "../../global.css"
+import { Colors } from "react-native/Libraries/NewAppScreen"
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabLayout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
+    <Tabs screenOptions={{
+      headerStyle: { backgroundColor: '#ede7ff' ,borderRadius:30 },
+      headerShadowVisible: false,
+      headerTitleAlign:'center',
+      tabBarStyle: {
+        backgroundColor: '#f5f5f5',
+        borderTopWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      tabBarActiveTintColor: "#6200ee",
+      tabBarInactiveTintColor: "#666666",
+
+    }}>
+
+        <Tabs.Screen name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title:'Status',
+          tabBarIcon: ({ color, focused,size }) => (
+            <MaterialCommunityIcons 
+            name="progress-check"
+            size={size}
+            color={color}
+            />
+          ),
         }}
-      />
-      <Tabs.Screen
-        name="explore"
+        />
+        <Tabs.Screen name="history"
+         options={{
+          title:'History',
+          tabBarIcon: ({ color, focused,size }) => (
+            <MaterialCommunityIcons 
+            name="history"
+            size={size}
+            color={color}
+            />
+          ),
+        }}
+        />
+        <Tabs.Screen name="settings"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title:'settings',
+          tabBarIcon: ({ color, focused,size }) => (
+            <MaterialCommunityIcons 
+            name="cog"
+            size={size}
+            color={color}
+            />
+          ),
         }}
-      />
+        />
     </Tabs>
-  );
+  )
 }
+
+export default TabLayout
