@@ -44,7 +44,7 @@ const TabLayout = () => {
           ),
         }}
         />
-        <Tabs.Screen name="settings"
+        {/* <Tabs.Screen name="settings"
         options={{
           title:'settings',
           tabBarIcon: ({ color, focused,size }) => (
@@ -55,7 +55,7 @@ const TabLayout = () => {
             />
           ),
         }}
-        />
+        /> */}
     </Tabs>
   )
 }

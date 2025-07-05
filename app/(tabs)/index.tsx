@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList,ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@/context/UserContext';
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -6,13 +6,16 @@ import { Button, SegmentedButtons } from 'react-native-paper';
 import { addTodayEntry } from '@/utils/storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getTodayLog } from '@/utils/storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { scheduleWaterReminder } from '@/utils/reminder';
 import SettingsModal from '@/components/SettingsModal';
 
 import HistoryCard from '@/components/historyCard';
+
 const Status = () => {
-  const { user, isLoadingUser, resetUser } = useUser();
+  
+  const { user, isLoadingUser } = useUser();
   const [limit, setLimit] = useState<number>(0);
   const [drinkedWater, setDrinkedWater] = useState<number>(0);
   const [recentEntries, setRecentEntries] = useState<{ amount: number; time: string }[]>([]);
@@ -22,7 +25,7 @@ const Status = () => {
     const fetchRecentHistory = async () => {
       try {
         const allEntries = await getTodayLog();
-        const lastTwo = allEntries.slice(-2).reverse(); // reverse to show most recent first
+        const lastTwo = allEntries.slice(-2).reverse(); 
         setRecentEntries(lastTwo);
       } catch (error) {
         console.log("Failed to fetch recent history:", error);
@@ -30,7 +33,7 @@ const Status = () => {
     };
 
     fetchRecentHistory();
-  }, [drinkedWater]); // refresh when user drinks water
+  }, [drinkedWater]);
 
   useEffect(() => {
     if (user?.mode === 'auto') {
@@ -50,7 +53,7 @@ const Status = () => {
   const handelSetting = () => {
     setModalVisible(true);
   }
-  const progress = limit > 0 ? (drinkedWater / limit) * 100 : 0;
+  const progress = drinkedWater ;
 
   if (isLoadingUser || !user) {
     return (
@@ -68,7 +71,7 @@ const Status = () => {
           radius={100}
           duration={1500}
           progressValueColor={'#00e0ff'}
-          maxValue={100}
+          maxValue={user.waterRequirement}
           title={'Progress'}
           titleColor={'#333'}
           activeStrokeColor={'#00e0ff'}
@@ -96,29 +99,53 @@ const Status = () => {
         }))}
         style={styles.segmentedButtons}
       />
-
+{/* 
       <Button
         mode="contained"
         onPress={() => {
           scheduleWaterReminder();
         }}>
         press for notifications
-      </Button>
+      </Button> */}
 
       <View style={styles.history}>
         <Text>last drink:</Text>
-        <FlatList
+        {/* <FlatList
           data={recentEntries}
           keyExtractor={(item, index) => `${item.time}-${index}`}
           renderItem={({ item }) => <HistoryCard item={item} />}
           ListEmptyComponent={<Text style={styles.empty}>No drinks yet today.</Text>}
-        />
+        /> */}
+        {
+          recentEntries ?
+          <View>
+            {
+              recentEntries.map((item,index)=>{
+                return(
+                  <HistoryCard  key={index} item={item}/>
+                )
+              })
+            }
+            </View>
+            :
+            <Text style={styles.empty}>No drinks yet today.</Text>
+
+        }
       </View>
       <SettingsModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
 
       />
+      {/* <View style={styles.tipsContainer}>
+  <Text style={styles.tipTitle}>💡 Hydration Tips</Text>
+  <Text style={styles.tipItem}>• Start your day with a glass of water.</Text>
+  <Text style={styles.tipItem}>• Keep a bottle with you at all times.</Text>
+  <Text style={styles.tipItem}>• Sip throughout the day, not all at once.</Text>
+  <Text style={styles.tipItem}>• Drink before you feel thirsty.</Text>
+  <Text style={styles.tipItem}>• Eat fruits and veggies with high water content.</Text>
+</View> */}
+
     </View>
   );
 };
@@ -153,9 +180,10 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   history: {
-    backgroundColor: '#ede7ff',
     padding: 16,
+    backgroundColor: '#ede7ff',
     borderRadius: 20,
+    marginTop:16
   },
   historyText: {
     fontSize: 20,
@@ -171,4 +199,20 @@ const styles = StyleSheet.create({
     color: '#888',
     fontSize: 14,
   },
+  tipsContainer: {
+  marginTop: 24,
+  padding: 16,
+  backgroundColor: '#e0f7fa',
+  borderRadius: 16,
+},
+tipTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 8,
+},
+tipItem: {
+  fontSize: 14,
+  marginBottom: 4,
+  color: '#333',
+},
 });
