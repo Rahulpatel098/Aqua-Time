@@ -18,13 +18,6 @@ useFocusEffect(
   }, [])
 );
 
-  const renderItem = ({ item }: { item: { amount: number; time: string } }) => (
-    <View style={styles.card}>
-      <Text style={styles.amount}>{item.amount} ml</Text>
-      <Text style={styles.time}>{item.time}</Text>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Today&apos;s Water Intake 💧</Text>

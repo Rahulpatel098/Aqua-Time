@@ -1,8 +1,6 @@
 import { Tabs } from "expo-router"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import "../../global.css"
-import { Colors } from "react-native/Libraries/NewAppScreen"
-
 const TabLayout = () => {
   return (
     <Tabs screenOptions={{

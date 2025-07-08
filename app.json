@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "DrinkWaterReminderApp",
-    "slug": "DrinkWaterReminderApp",
+    "name": "Aqua_Time",
+    "slug": "Aqua_Time",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo1.png",
-    "scheme": "drinkwaterreminderapp",
+    "scheme": "Aqua_Time",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

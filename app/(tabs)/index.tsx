@@ -14,7 +14,9 @@ import SettingsModal from '@/components/SettingsModal';
 import HistoryCard from '@/components/historyCard';
 
 const Status = () => {
-  
+  // const [counter,setCounter]=useState(0);
+  // setCounter(counter+1);
+  console.log(`screen resfresh counter `);;
   const { user, isLoadingUser } = useUser();
   const [limit, setLimit] = useState<number>(0);
   const [drinkedWater, setDrinkedWater] = useState<number>(0);
@@ -66,6 +68,7 @@ const Status = () => {
   return (
     <View style={styles.container}>
       <View style={styles.progress}>
+    {/* <Text style={{textAlign:'',fontSize:23}}>{`Hi ${user.name} 👋`}</Text> */}
         <CircularProgress
           value={progress}
           radius={100}
@@ -99,14 +102,14 @@ const Status = () => {
         }))}
         style={styles.segmentedButtons}
       />
-{/* 
+
       <Button
         mode="contained"
         onPress={() => {
           scheduleWaterReminder();
         }}>
         press for notifications
-      </Button> */}
+      </Button>
 
       <View style={styles.history}>
         <Text>last drink:</Text>
