@@ -27,11 +27,38 @@ Aqua Time is a React Native mobile application built using Expo that helps users
 - **Custom Hooks & Context API**
 
 ---
+## 📸 Screenshots
 
-## 🚀 Getting Started
+> All screenshots are located in `assets/appScreenshots/`
 
-### 1. Clone the Repository
+### 🔹 App Screens
 
-```bash
-git clone https://github.com/your-username/aqua-time.git
-cd aqua-time
+#### 1. Custom Settings Screen
+![Custom Settings](./assets/appScreenshots/Aqua_time_customSettings.jpg)
+
+#### 2. Get Started Screen
+![Get Started](./assets/appScreenshots/Aqua_time_getStarted.jpg)
+
+#### 3. Loading Screen
+![Loading](./assets/appScreenshots/Aqua_time_loading.jpg)
+
+#### 4. Notification Prompt
+![Notification](./assets/appScreenshots/Aqua_time_notification.jpg)
+
+#### 5. Settings Modal
+![Settings](./assets/appScreenshots/Aqua_time_settings.jpg)
+
+#### 6. Splash Screen
+![Splash Screen](./assets/appScreenshots/Aqua_time_splashScreen.jpg)
+
+#### 7. Status (Progress) Screen
+![Status Screen](./assets/appScreenshots/Aqua_time_Status.jpg)
+
+
+
+---
+
+Let me know when you’re ready to paste the screenshot section — or if you'd like a more advanced or styled version of the README later.
+---
+This app is under active development.
+New features and improvements will be added soon!
