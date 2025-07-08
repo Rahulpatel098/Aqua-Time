@@ -103,13 +103,13 @@ const Status = () => {
         style={styles.segmentedButtons}
       />
 
-      <Button
+      {/* <Button
         mode="contained"
         onPress={() => {
           scheduleWaterReminder();
         }}>
         press for notifications
-      </Button>
+      </Button> */}
 
       <View style={styles.history}>
         <Text>last drink:</Text>
