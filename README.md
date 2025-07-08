@@ -57,8 +57,5 @@ Aqua Time is a React Native mobile application built using Expo that helps users
 
 
 ---
-
-Let me know when you’re ready to paste the screenshot section — or if you'd like a more advanced or styled version of the README later.
----
 This app is under active development.
 New features and improvements will be added soon!
