@@ -27,33 +27,33 @@ Aqua Time is a React Native mobile application built using Expo that helps users
 - **Custom Hooks & Context API**
 
 ---
+
 ## 📸 Screenshots
 
 > All screenshots are located in `assets/appScreenshots/`
 
 ### 🔹 App Screens
 
-#### 1. Custom Settings Screen
-![Custom Settings](./assets/appScreenshots/Aqua_time_customSettings.jpg)
+#### 1. Custom Settings Screen  
+<img src="./assets/appScreenshots/Aqua_time_customSettings.jpg" alt="Custom Settings" width="300" />
 
-#### 2. Get Started Screen
-![Get Started](./assets/appScreenshots/Aqua_time_getStarted.jpg)
+#### 2. Get Started Screen  
+<img src="./assets/appScreenshots/Aqua_time_getStarted.jpg" alt="Get Started" width="300" />
 
-#### 3. Loading Screen
-![Loading](./assets/appScreenshots/Aqua_time_loading.jpg)
+#### 3. Loading Screen  
+<img src="./assets/appScreenshots/Aqua_time_loading.jpg" alt="Loading" width="300" />
 
-#### 4. Notification Prompt
-![Notification](./assets/appScreenshots/Aqua_time_notification.jpg)
+#### 4. Notification Prompt  
+<img src="./assets/appScreenshots/Aqua_time_notification.jpg" alt="Notification" width="300" />
 
-#### 5. Settings Modal
-![Settings](./assets/appScreenshots/Aqua_time_settings.jpg)
+#### 5. Settings Modal  
+<img src="./assets/appScreenshots/Aqua_time_settings.jpg" alt="Settings" width="300" />
 
-#### 6. Splash Screen
-![Splash Screen](./assets/appScreenshots/Aqua_time_splashScreen.jpg)
+#### 6. Splash Screen  
+<img src="./assets/appScreenshots/Aqua_time_splashScreen.jpg" alt="Splash" width="300" />
 
-#### 7. Status (Progress) Screen
-![Status Screen](./assets/appScreenshots/Aqua_time_Status.jpg)
-
+#### 7. Status (Progress) Screen  
+<img src="./assets/appScreenshots/Aqua_time_Status.jpg" alt="Status" width="300" />
 
 
 ---
